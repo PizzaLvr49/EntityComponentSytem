@@ -17,5 +17,10 @@
         {
             return System.Text.Json.JsonSerializer.Deserialize<T>(json) ?? throw new InvalidOperationException("Deserialization returned null");
         }
+        public void Destroy()
+        {
+            Entity.Components.Remove(this);
+        }
+
     }
 }

@@ -7,10 +7,22 @@
         public List<Component> Components { get; set; } = [];
         public Entity Parent { get; set; }
 
-        public Entity(Entity Parent, string Name)
+        public Scene Scene { get; set; }
+
+        public Entity(Entity? Parent, string Name, Scene scene)
         {
+            this.Scene = scene;
             this.Name = Name;
-            this.Parent = Parent ?? this;
+            this.Parent = Parent ?? scene.Default ?? this;
+            if (this.Parent == this && scene.Default != null)
+            {
+                scene.Default.Destroy();
+                scene.Default = this;
+            }
+            else if (this.Parent != this)
+            {
+                scene.Default = this;
+            }
         }
 
         public T GetComponent<T>() where T : Component
@@ -29,6 +41,14 @@
             if (Components.OfType<T>().Any()) throw new Exception($"Entity already has component '{typeof(T).Name}'");
             Components.Add(component);
             component.Entity = this;
+        }
+        public void Destroy()
+        {
+            foreach (Component component in Components)
+            {
+                component.Destroy();
+            }
+            Scene.Entities.Remove(this);
         }
     }
 }
