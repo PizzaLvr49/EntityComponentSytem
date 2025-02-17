@@ -14,11 +14,10 @@ namespace EntityComponentSystem.Components
 
         override public void Update(double deltaTime, int Tick)
         {
-            if (Tick % 60 == 1)
-            {
-                Console.Clear();
-                Console.WriteLine("FPS: " + Math.Round(1 / deltaTime * 1000));
-            }
+        }
+        override public void Start()
+        {
+            position = new(120, 100);
         }
     }
 }
