@@ -22,11 +22,11 @@
                     return (T)component;
                 }
             }
-            return null;
+            throw new Exception($"Entity does not have component '{typeof(T).Name}'");
         }
         public void AddComponent<T>(T component) where T : Component
         {
-            if (Components.OfType<T>().Any()) throw new Exception($"Entity already has component {typeof(T).Name}");
+            if (Components.OfType<T>().Any()) throw new Exception($"Entity already has component '{typeof(T).Name}'");
             Components.Add(component);
             component.Entity = this;
         }
